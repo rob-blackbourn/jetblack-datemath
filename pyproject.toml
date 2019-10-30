@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jetblack-datemath"
-version = "4.1.1"
+version = "1.0.0"
 description = "Date arithmetic for Python"
 authors = ["Rob Blackbourn <rob.blackbourn@googlemail.com>"]
 readme = "README.md"
