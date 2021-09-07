@@ -1,6 +1,4 @@
-"""
-Months
-"""
+"""Months"""
 
 from enum import IntEnum
 

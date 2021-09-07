@@ -1,6 +1,4 @@
-"""
-Week days
-"""
+"""Week days"""
 
 from enum import IntEnum
 

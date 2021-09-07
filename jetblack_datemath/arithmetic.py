@@ -1,6 +1,4 @@
-"""
-Date Math
-"""
+"""Date Math"""
 
 import calendar
 import datetime
@@ -19,23 +17,24 @@ WEEKEND_CALENDAR = SimpleCalendar([DayOfWeek.SATURDAY, DayOfWeek.SUNDAY], [])
 def days_in_month(year: int, month: int) -> int:
     """Returns the number of days in the month.
 
-    :param year: The year
-    :type year: int
-    :param month: The month
-    :type month: int
-    :return: The number of days in the month
-    :rtype: int
+    Args:
+        year (int): The year
+        month (int): The month
+
+    Returns:
+        int: The number of days in the month.
     """
     return 29 if calendar.isleap(year) and month == 2 else _MONTH_DAYS[month - 1]
 
 
 def days_in_year(year: int) -> int:
-    """Returns the number of days in the year.
+    """Returns the number of days in the year
 
-    :param year: The year
-    :type year: int
-    :return: The number of days in the year
-    :rtype: int
+    Args:
+        year (int): The year.
+
+    Returns:
+        int: The number of days in the year.
     """
     return 366 if calendar.isleap(year) else 365
 
@@ -43,20 +42,27 @@ def days_in_year(year: int) -> int:
 def is_end_of_month(date: datetime.date) -> bool:
     """Returns true if the given date is the last day of the month.
 
-    :param date: The date
-    :type date: date.datetime
-    :return: True if the given date is the last day of the month
-    :rtype: bool
+    Args:
+        date (datetime.date): The date to check.
+
+    Returns:
+        bool: True if the given date is the last day of the month
     """
     return date.day == days_in_month(date.year, date.month)
 
 
 def add_months(date: datetime.date, months: int, eom: bool = False) -> datetime.date:
-    """
-    Adds months to the date. If the end of month anchor is true, keep to the
+    """Adds months to the date. If the end of month anchor is true, keep to the
     end of the month is the given date was at the end of the month.
-    """
 
+    Args:
+        date (datetime.date): The date.
+        months (int): The number of months to add.
+        eom (bool, optional): Anchor to the end of the month. Defaults to False.
+
+    Returns:
+        datetime.date: The adjusted date.
+    """
     month = date.month - 1 + months
     year = date.year + month // 12
     month = month % 12 + 1
@@ -72,8 +78,17 @@ def nearest_business_day(
         prefer_forward: bool = True,
         cal: AbstractCalendar = WEEKEND_CALENDAR
 ) -> datetime.date:
-    """
-    Find the nearest business day to a given date.
+    """Find the nearest business day to a given date.
+
+    Args:
+        date (datetime.date): The date.
+        prefer_forward (bool, optional): If True prefer the nearest business day
+            in the future. Defaults to True.
+        cal (AbstractCalendar, optional): The holiday calendar. Defaults to
+            WEEKEND_CALENDAR.
+
+    Returns:
+        datetime.date: The nearest business day to a given date.
     """
     if cal.is_business_day(date):
         return date
@@ -98,18 +113,17 @@ def add_business_days(
         count: int,
         cal: AbstractCalendar = WEEKEND_CALENDAR
 ) -> datetime.date:
-    """Adds business days to a date
+    """Add business days to a date.
 
-    :param date: The target date
-    :type date: date
-    :param count: The number of days
-    :type count: int
-    :param cal: The calendar, defaults to WEEKEND_CALENDAR
-    :type cal: AbstractCalendar, optional
-    :return: The new date
-    :rtype: date
+    Args:
+        date (datetime.date): The date.
+        count (int): The number of days to add.
+        cal (AbstractCalendar, optional): The holiday calendar. Defaults to
+            WEEKEND_CALENDAR.
+
+    Returns:
+        datetime.date: The calculated date.
     """
-
     sign = 1 if count > 0 else -1
     signed_day = datetime.timedelta(sign)
 
@@ -129,9 +143,21 @@ def adjust(
         prefer_forward: bool = True,
         cal: AbstractCalendar = WEEKEND_CALENDAR
 ) -> datetime.date:
-    """
-    Adjusts a non-business day to the appropriate near business day
+    """Adjusts a non-business day to the appropriate near business day
     with respect to the given convention.
+
+    Args:
+        date (datetime.date): The date.
+        convention (BusinessDayConvention, optional): The business day conventions. Defaults to BusinessDayConvention.FOLLOWING.
+        prefer_forward (bool, optional): If True prefer the nearest business day
+            in the future. Defaults to True.
+        cal (AbstractCalendar, optional): The holiday calendar. Defaults to WEEKEND_CALENDAR.
+
+    Raises:
+        ValueError: [description]
+
+    Returns:
+        datetime.date: [description]
     """
 
     if convention == BusinessDayConvention.NONE or cal.is_business_day(date):
@@ -170,12 +196,28 @@ def advance(
         eom: bool = False,
         cal: AbstractCalendar = WEEKEND_CALENDAR
 ) -> datetime.date:
-    """
-    Advances the given date of the given number of business days and
+    """Advances the given date of the given number of business days and
     returns the result.
+    
     Note: The input date is not modified.
-    """
 
+    Args:
+        date (datetime.date): The date.
+        days (Optional[int], optional): The number of business days. Defaults to
+            None.
+        weeks (Optional[int], optional): The number of weeks. Defaults to None.
+        months (Optional[int], optional): The number of months. Defaults to
+            None.
+        years (Optional[int], optional): The number of years. Defaults to None.
+        convention (BusinessDayConvention, optional): The business day
+            conventions Defaults to BusinessDayConvention.FOLLOWING.
+        eom (bool, optional): The end of month anchor. Defaults to False.
+        cal (AbstractCalendar, optional): The holiday calendar. Defaults to
+            WEEKEND_CALENDAR.
+
+    Returns:
+        datetime.date: The advanced date.
+    """
     if not (days or weeks or months or years):
         return adjust(date, convention, cal=cal)
 
@@ -198,8 +240,14 @@ def advance(
 
 
 def end_of_month(year: int, month: int) -> datetime.date:
-    """
-    Return the date at the last day of the month.
+    """Return the date at the last day of the month.
+
+    Args:
+        year (int): The year.
+        month (int): The month.
+
+    Returns:
+        datetime.date: The date for the end of the month.
     """
     return datetime.date(year, month, days_in_month(year, month))
 
@@ -210,12 +258,21 @@ def add_nth_day_of_week(
         dow: DayOfWeek,
         strictly_different: bool
 ) -> datetime.date:
-    """
-    Add or subtract a number of different days of the week.
+    """Add or subtract a number of different days of the week.
 
     If the start date lies on the specified day of the week and the strictly
     different flag is false, the current date would be considered the first
     day of the week.
+
+    Args:
+        date (datetime.date): The date.
+        nth (int): The week day count.
+        dow (DayOfWeek): The day of the week.
+        strictly_different (bool): If true the returned date must be different
+            from the supplied date.
+
+    Returns:
+        datetime.date: The nth week day.
     """
 
     if nth == 0:
@@ -256,8 +313,13 @@ def add_nth_day_of_week(
 
 
 def easter(year: int) -> datetime.date:
-    """
-    The date for Easter Sunday for the given year.
+    """The date for Easter Sunday for the given year.
+
+    Args:
+        year (int): The year.
+
+    Returns:
+        datetime.date: The date for easter.
     """
     # Note: Only true for Gregorian dates
 
@@ -302,8 +364,14 @@ def easter(year: int) -> datetime.date:
 
 
 def days_and_months_between(start_date: datetime.date, end_date: datetime.date) -> Tuple[int, int]:
-    """
-    Calculates the number of days an months between two dates.
+    """    Calculates the number of days an months between two dates.
+
+    Args:
+        start_date (datetime.date): The start date.
+        end_date (datetime.date): The end date.
+
+    Returns:
+        Tuple[int, int]: A tuple of the days and months.
     """
     if start_date == end_date:
         return 0, 0
@@ -332,8 +400,14 @@ def days_and_months_between(start_date: datetime.date, end_date: datetime.date) 
 
 
 def are_in_same_quarter(first: datetime.date, second: datetime.date) -> bool:
-    """
-    Find out if two dates are in the same quarter.
+    """Find out if two dates are in the same quarter.
+
+    Args:
+        first (datetime.date): The first date.
+        second (datetime.date): The second date.
+
+    Returns:
+        bool: True if the dates aare in the same quarter.
     """
     if first > second:
         return are_in_same_quarter(second, first) # pylint: disable=arguments-out-of-order
@@ -344,8 +418,13 @@ def are_in_same_quarter(first: datetime.date, second: datetime.date) -> bool:
 
 
 def quarter_of_year(date: datetime.date) -> int:
-    """
-    Find the quarter of the year for a given date.
+    """Find the quarter of the year for a given date.
+
+    Args:
+        date (datetime.date): The date.
+
+    Returns:
+        int: The quarter of the year from 1, 2, 3, 4.
     """
     if date.month in [MonthOfYear.JANUARY, MonthOfYear.FEBRUARY, MonthOfYear.MARCH]:
         return 1
@@ -358,8 +437,14 @@ def quarter_of_year(date: datetime.date) -> int:
 
 
 def week_of_year(date: datetime.date, iso: bool = True) -> int:
-    """
-    Return the week of the year
+    """Return the week of the year.
+
+    Args:
+        date (datetime.date): The date.
+        iso (bool, optional): If ISO conventions are used. Defaults to True.
+
+    Returns:
+        int: The week of the year.
     """
     if iso:
         return date.isocalendar()[1]

@@ -2,7 +2,7 @@
 
 from abc import ABCMeta, abstractmethod
 import datetime
-from typing import List, Dict
+from typing import Dict, List, Sequence
 
 # from .arithmetic import date
 from .weekdays import DayOfWeek
@@ -15,41 +15,44 @@ class AbstractCalendar(metaclass=ABCMeta):
     def is_weekend(self, target_date: datetime.date) -> bool:
         """If a weekend true, otherwise false
 
-        :param target_date: The target date
-        :type target_date: date
-        :return: True if a weekend, otherwise false
-        :rtype: bool
+        Args:
+            target_date (datetime.date): The target date
+
+        Returns:
+            bool: True if a weekend, otherwise false
         """
 
     @abstractmethod
     def is_holiday(self, target_date: datetime.date) -> bool:
         """If a holiday true, otherwise false
 
-        :param target_date: The target date
-        :type target_date: date
-        :return: True if a weekend, otherwise false.
-        :rtype: bool
+        Args:
+            target_date (datetime.date): The target date
+
+        Returns:
+            bool: True if a holiday, otherwise false.
         """
 
     @abstractmethod
     def is_business_day(self, target_date: datetime.date) -> bool:
         """True if a business day, otherwise false
 
-        :param target_date: The target date
-        :type target_date: date
-        :return: True is a business day, otherwise false.
-        :rtype: bool
+        Args:
+            target_date (datetime.date): The target date.
+
+        Returns:
+            bool: True if a business day, otherwise false.
         """
 
 
 class AbstractWeekendCalendar(AbstractCalendar):
     """AbstractWeekendCalendar"""
 
-    def __init__(self, weekends: List[DayOfWeek]) -> None:
-        """Initialise the calendAR
+    def __init__(self, weekends: Sequence[DayOfWeek]) -> None:
+        """Initialise the calendar.
 
-        :param weekends: The days of the week that are holidays
-        :type weekends: List[DayOfWeek]
+        Args:
+            weekends (Sequence[DayOfWeek]): The days of the week that are holidays
         """
         self.weekends = weekends
 
@@ -93,8 +96,9 @@ class YearlyCalendar(AbstractWeekendCalendar):
     def fetch_holidays(self, year: int) -> Dict[datetime.date, str]:
         """Fetch holidays for a given year
 
-        :param year: The year
-        :type year: int
-        :return: Holidays for that year
-        :rtype: Dict[date, str]
+        Args:
+            year (int): The year
+
+        Returns:
+            Dict[datetime.date, str]: A dictionary of holiday dates with reasons.
         """

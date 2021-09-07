@@ -1,6 +1,4 @@
-"""
-Date Rules
-"""
+"""Date Rules"""
 
 from enum import IntEnum
 

@@ -5,5 +5,5 @@ Date arithmetic for Python
 ## Installation
 
 ```bash
-$ pip install jetblack-datetime
+$ pip install jetblack-datemath
 ```
