@@ -30,6 +30,8 @@ from .daterules import BusinessDayConvention
 from .months import MonthOfYear
 from .weekdays import DayOfWeek
 
+from .year_fraction import yearfrac, DayCount
+
 __all__ = [
     'WEEKEND_CALENDAR',
     'days_in_month',
@@ -55,5 +57,8 @@ __all__ = [
 
     'BusinessDayConvention',
     'MonthOfYear',
-    'DayOfWeek'
+    'DayOfWeek',
+
+    'yearfrac',
+    'DayCount',
 ]
