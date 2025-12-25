@@ -68,7 +68,7 @@ def add_months(date: datetime.date, months: int, eom: bool = False) -> datetime.
     month = date.month - 1 + months
     year = date.year + month // 12
     month = month % 12 + 1
-    if eom and date == end_of_month(date.year, date.month):
+    if eom and date == last_day_of_month(date.year, date.month):
         day = days_in_month(year, month)
     else:
         day = min(date.day, days_in_month(year, month))
@@ -241,7 +241,7 @@ def advance(
     return date
 
 
-def end_of_month(year: int, month: int) -> datetime.date:
+def last_day_of_month(year: int, month: int) -> datetime.date:
     """Return the date at the last day of the month.
 
     Args:
