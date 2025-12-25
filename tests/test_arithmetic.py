@@ -17,26 +17,32 @@ def test_days_in_month():
     assert datemath.days_in_month(2009, 5) == 31, "There are 31 days in May."
     assert datemath.days_in_month(2009, 6) == 30, "There are 30 days in June."
     assert datemath.days_in_month(2009, 7) == 31, "There are 31 days in July."
-    assert datemath.days_in_month(2009, 8) == 31, "There are 31 days in August."
-    assert datemath.days_in_month(2009, 9) == 30, "There are 30 days in September."
-    assert datemath.days_in_month(2009, 10) == 31, "There are 31 days in October."
-    assert datemath.days_in_month(2009, 11) == 30, "There are 30 days in November."
-    assert datemath.days_in_month(2009, 12) == 31, "There are 31 days in December."
-    assert datemath.days_in_month(2008, 2) == 29, "There are 29 days in February in a leap year."
+    assert datemath.days_in_month(
+        2009, 8) == 31, "There are 31 days in August."
+    assert datemath.days_in_month(
+        2009, 9) == 30, "There are 30 days in September."
+    assert datemath.days_in_month(
+        2009, 10) == 31, "There are 31 days in October."
+    assert datemath.days_in_month(
+        2009, 11) == 30, "There are 30 days in November."
+    assert datemath.days_in_month(
+        2009, 12) == 31, "There are 31 days in December."
+    assert datemath.days_in_month(
+        2008, 2) == 29, "There are 29 days in February in a leap year."
 
 
-def test_is_weekend():
+def test_weekend_calendar():
     """Test weekend detection"""
-    assert not datemath.WEEKEND_CALENDAR.is_weekend(
+    assert datemath.WEEKEND_CALENDAR.is_business_day(
         date(2014, 12, 19)
     ), "19 December 2014 was a Friday."
-    assert datemath.WEEKEND_CALENDAR.is_weekend(
+    assert not datemath.WEEKEND_CALENDAR.is_business_day(
         date(2014, 12, 20)
     ), "20 December 2014 was a Saturday."
-    assert datemath.WEEKEND_CALENDAR.is_weekend(
+    assert not datemath.WEEKEND_CALENDAR.is_business_day(
         date(2014, 12, 21)
     ), "21 December 2014 was a Sunday."
-    assert not datemath.WEEKEND_CALENDAR.is_weekend(
+    assert datemath.WEEKEND_CALENDAR.is_business_day(
         date(2014, 12, 22)
     ), "22 December 2014 was a Monday."
 
@@ -278,3 +284,13 @@ def test_adjust():
     assert datemath.adjust(
         jan_first, BusinessDayConvention.FOLLOWING, True, cal
     ) == jan_second, "Adjusted to January 2."
+
+
+def test_quarter_of_year() -> None:
+    """Test for quarter of the year"""
+    actual = [
+        datemath.quarter_of_year(date(2017, m, 1))
+        for m in range(1, 13)
+    ]
+    expected = [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4]
+    assert expected == actual

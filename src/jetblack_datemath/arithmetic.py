@@ -2,16 +2,19 @@
 
 import calendar
 import datetime
-from typing import Optional, Tuple
+from typing import Optional, Tuple, cast
 
 from .weekdays import DayOfWeek
 from .months import MonthOfYear
 from .daterules import BusinessDayConvention
-from .calendars import SimpleCalendar, AbstractCalendar
+from .calendars import WeekendCalendar, AbstractCalendar
 
 _MONTH_DAYS = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 
-WEEKEND_CALENDAR = SimpleCalendar([DayOfWeek.SATURDAY, DayOfWeek.SUNDAY], [])
+WEEKEND_CALENDAR = cast(
+    AbstractCalendar,
+    WeekendCalendar([DayOfWeek.SATURDAY, DayOfWeek.SUNDAY])
+)
 
 
 def days_in_month(year: int, month: int) -> int:
@@ -198,7 +201,7 @@ def advance(
 ) -> datetime.date:
     """Advances the given date of the given number of business days and
     returns the result.
-    
+
     Note: The input date is not modified.
 
     Args:
@@ -410,7 +413,7 @@ def are_in_same_quarter(first: datetime.date, second: datetime.date) -> bool:
         bool: True if the dates aare in the same quarter.
     """
     if first > second:
-        return are_in_same_quarter(second, first) # pylint: disable=arguments-out-of-order
+        return are_in_same_quarter(second, first)  # pylint: disable=arguments-out-of-order
 
     return first == second or (
         first.year == second.year and second.month - first.month < 4 and (
