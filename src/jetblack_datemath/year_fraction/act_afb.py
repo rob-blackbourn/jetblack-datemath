@@ -6,7 +6,11 @@ from datetime import date
 
 def act_afb(first: date, second: date) -> float:
 
-    if first.year == second.year:
+    if first > second:
+
+        return act_afb(second, first)  # pylint: disable=arguments-out-of-order
+
+    elif first.year == second.year:
 
         diff_days = (second - first).days
         if diff_days == 0:
@@ -16,9 +20,9 @@ def act_afb(first: date, second: date) -> float:
 
         return diff_days / denom
 
-    elif first.year < second.year:
+    else:
 
-        diff1 = (date(second.year, 12, 31) - first).days + 1
+        diff1 = (date(first.year, 12, 31) - first).days + 1
         denom1 = 366 if isleap(first.year) and first.month < 3 else 365
 
         diff2 = (second - date(second.year, 1, 1)).days
@@ -26,6 +30,3 @@ def act_afb(first: date, second: date) -> float:
 
         diff_years = second.year - first.year - 1
         return diff1 / denom1 + diff2 / denom2 + diff_years
-
-    else:
-        return act_afb(second, first)  # pylint: disable=arguments-out-of-order
