@@ -2,7 +2,7 @@
 
 from abc import ABCMeta, abstractmethod
 import datetime
-from typing import Dict, List, Sequence
+from typing import Dict, List, Iterable, override
 
 # from .arithmetic import date
 from .weekdays import DayOfWeek
@@ -10,28 +10,6 @@ from .weekdays import DayOfWeek
 
 class AbstractCalendar(metaclass=ABCMeta):
     """Abstract calendar"""
-
-    @abstractmethod
-    def is_weekend(self, target_date: datetime.date) -> bool:
-        """If a weekend true, otherwise false
-
-        Args:
-            target_date (datetime.date): The target date
-
-        Returns:
-            bool: True if a weekend, otherwise false
-        """
-
-    @abstractmethod
-    def is_holiday(self, target_date: datetime.date) -> bool:
-        """If a holiday true, otherwise false
-
-        Args:
-            target_date (datetime.date): The target date
-
-        Returns:
-            bool: True if a holiday, otherwise false.
-        """
 
     @abstractmethod
     def is_business_day(self, target_date: datetime.date) -> bool:
@@ -45,29 +23,35 @@ class AbstractCalendar(metaclass=ABCMeta):
         """
 
 
-class AbstractWeekendCalendar(AbstractCalendar):
-    """AbstractWeekendCalendar"""
+class WeekendCalendar(AbstractCalendar):
+    """WeekendCalendar"""
 
-    def __init__(self, weekends: Sequence[DayOfWeek]) -> None:
+    def __init__(self, weekends: Iterable[DayOfWeek]) -> None:
         """Initialise the calendar.
 
         Args:
-            weekends (Sequence[DayOfWeek]): The days of the week that are holidays
+            weekends (Iterable[DayOfWeek]): The days of the week that are
+                holidays
         """
-        self.weekends = weekends
-
-    @abstractmethod
-    def is_holiday(self, target_date: datetime.date) -> bool:
-        ...
+        self.weekends = set(weekends)
 
     def is_weekend(self, target_date: datetime.date) -> bool:
+        """If a weekend true, otherwise false
+
+        Args:
+            target_date (datetime.date): The target date
+
+        Returns:
+            bool: True if a weekend, otherwise false
+        """
         return target_date.weekday() in self.weekends
 
+    @override
     def is_business_day(self, target_date: datetime.date) -> bool:
-        return not (self.is_weekend(target_date) or self.is_holiday(target_date))
+        return not self.is_weekend(target_date)
 
 
-class SimpleCalendar(AbstractWeekendCalendar):
+class SimpleCalendar(WeekendCalendar):
     """SimpleCalendar"""
 
     def __init__(self, weekends: List[DayOfWeek], holidays: List[datetime.date]) -> None:
@@ -77,8 +61,12 @@ class SimpleCalendar(AbstractWeekendCalendar):
     def is_holiday(self, target_date: datetime.date) -> bool:
         return target_date in self.holidays
 
+    @override
+    def is_business_day(self, target_date: datetime.date) -> bool:
+        return not (self.is_weekend(target_date) or self.is_holiday(target_date))
 
-class YearlyCalendar(AbstractWeekendCalendar):
+
+class YearlyCalendar(WeekendCalendar):
     """YearlyCalendar"""
 
     def __init__(self, weekends: List[DayOfWeek]) -> None:
@@ -86,6 +74,14 @@ class YearlyCalendar(AbstractWeekendCalendar):
         self._holidays: Dict[int, Dict[datetime.date, str]] = {}
 
     def is_holiday(self, target_date: datetime.date) -> bool:
+        """If a holiday true, otherwise false
+
+        Args:
+            target_date (datetime.date): The target date
+
+        Returns:
+            bool: True if a holiday, otherwise false.
+        """
         if target_date.year not in self._holidays:
             self._holidays[target_date.year] = self.fetch_holidays(
                 target_date.year)

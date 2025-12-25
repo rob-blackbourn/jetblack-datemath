@@ -21,7 +21,7 @@ from .arithmetic import (
 
 from .calendars import (
     AbstractCalendar,
-    AbstractWeekendCalendar,
+    WeekendCalendar,
     SimpleCalendar,
     YearlyCalendar
 )
@@ -49,7 +49,7 @@ __all__ = [
     'week_of_year',
 
     'AbstractCalendar',
-    'AbstractWeekendCalendar',
+    'WeekendCalendar',
     'SimpleCalendar',
     'YearlyCalendar',
 
