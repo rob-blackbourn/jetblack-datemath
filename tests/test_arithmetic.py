@@ -7,7 +7,7 @@ from jetblack_datemath.calendars import SimpleCalendar
 from jetblack_datemath.weekdays import DayOfWeek
 
 
-def test_days_in_month():
+def test_days_in_month() -> None:
     """Test days_in_month"""
     assert datemath.days_in_month(2009, 1) == 31, "28 days in January."
     assert datemath.days_in_month(
@@ -31,7 +31,7 @@ def test_days_in_month():
         2008, 2) == 29, "There are 29 days in February in a leap year."
 
 
-def test_weekend_calendar():
+def test_weekend_calendar() -> None:
     """Test weekend detection"""
     assert datemath.WEEKEND_CALENDAR.is_business_day(
         date(2014, 12, 19)
@@ -47,7 +47,7 @@ def test_weekend_calendar():
     ), "22 December 2014 was a Monday."
 
 
-def test_is_end_of_month():
+def test_is_end_of_month() -> None:
     """Test end of month"""
     assert not datemath.is_end_of_month(
         date(2008, 1, 30)
@@ -66,7 +66,7 @@ def test_is_end_of_month():
     ), "28 February 2009 is the end of the month because it's a not leap year."
 
 
-def test_is_holiday():
+def test_is_holiday() -> None:
     """Test for holidays"""
     cal = SimpleCalendar(
         [DayOfWeek.SATURDAY, DayOfWeek.SUNDAY],
@@ -83,7 +83,7 @@ def test_is_holiday():
     ), "Saturday 27 December 2014 is not a holiday."
 
 
-def test_is_business_day():
+def test_is_business_day() -> None:
     """Test for Business days"""
     cal = SimpleCalendar(
         [DayOfWeek.SATURDAY, DayOfWeek.SUNDAY],
@@ -109,7 +109,7 @@ def test_is_business_day():
              )), "Monday 29 December 2014 is a business day."
 
 
-def test_add_months():
+def test_add_months() -> None:
     """Test adding months"""
 
     # Forward
@@ -138,7 +138,7 @@ def test_add_months():
         date(2013, 5, 31), -1, False), "Should not stay in May."
 
 
-def test_easter():
+def test_easter() -> None:
     """Test easter"""
     assert date(2001, 4, 15) == datemath.easter(2001), "Easter 2001"
     assert date(2002, 3, 31) == datemath.easter(2002), "Easter 2002"
@@ -163,7 +163,7 @@ def test_easter():
     assert date(2021, 4, 4) == datemath.easter(2021), "Easter 2021"
 
 
-def test_add_business_days():
+def test_add_business_days() -> None:
     """Test adding business days"""
     cal = SimpleCalendar(
         [DayOfWeek.SATURDAY, DayOfWeek.SUNDAY],
@@ -197,7 +197,7 @@ def test_add_business_days():
     ), "Nothing to skip."
 
 
-def test_nearest_business_day():
+def test_nearest_business_day() -> None:
     """Test for nearest business day"""
     #              July 2015
     # Su Mo Tu We Th Fr Sa
@@ -224,7 +224,7 @@ def test_nearest_business_day():
     ), "Sunday should prefer to roll to Friday"
 
 
-def test_add_nth_day_of_week():
+def test_add_nth_day_of_week() -> None:
     """Test day of week arithmetic"""
     #      June 2015
     # Su Mo Tu We Th Fr Sa
@@ -259,7 +259,7 @@ def test_add_nth_day_of_week():
     ), "Third Wednesday from the end of the month.."
 
 
-def test_adjust():
+def test_adjust() -> None:
     """Test date adjustment"""
     weekends = [DayOfWeek.SATURDAY, DayOfWeek.SUNDAY]
     holidays = [
