@@ -5,7 +5,6 @@ import datetime
 from typing import Optional, Tuple, cast
 
 from .weekdays import DayOfWeek
-from .months import MonthOfYear
 from .daterules import BusinessDayConvention
 from .calendars import WeekendCalendar, AbstractCalendar
 
@@ -429,14 +428,7 @@ def quarter_of_year(date: datetime.date) -> int:
     Returns:
         int: The quarter of the year from 1, 2, 3, 4.
     """
-    if date.month in [MonthOfYear.JANUARY, MonthOfYear.FEBRUARY, MonthOfYear.MARCH]:
-        return 1
-    elif date.month in [MonthOfYear.APRIL, MonthOfYear.MAY, MonthOfYear.JUNE]:
-        return 2
-    elif date.month in [MonthOfYear.JULY, MonthOfYear.AUGUST, MonthOfYear.SEPTEMBER]:
-        return 3
-    else:
-        return 4
+    return (date.month - 1) // 3 + 1
 
 
 def week_of_year(date: datetime.date, iso: bool = True) -> int:
