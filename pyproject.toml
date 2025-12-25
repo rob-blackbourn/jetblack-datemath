@@ -74,7 +74,7 @@ testpaths = [ "tests" ]
 
 # mypy
 [tool.mypy]
-files = [ "src/jetblack-datemath", "tests" ]
+files = [ "src/jetblack_datemath", "tests" ]
 
 [[tool.mypy.overrides]]
 module = "pytest"
