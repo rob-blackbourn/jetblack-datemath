@@ -294,3 +294,23 @@ def test_quarter_of_year() -> None:
     ]
     expected = [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4]
     assert expected == actual
+
+
+def test_are_in_same_quarter() -> None:
+    """Tests for same quarter"""
+    assert datemath.are_in_same_quarter(
+        date(2025, 1, 1),
+        date(2025, 1, 1)
+    ), "Same date is in same quarter"
+    assert datemath.are_in_same_quarter(
+        date(2025, 1, 1),
+        date(2025, 3, 31)
+    ), "1-Jan-25 is in same quarter as 31-Mar-25 are in same quarter"
+    assert not datemath.are_in_same_quarter(
+        date(2025, 1, 1),
+        date(2026, 3, 31)
+    ), "1-Jan-25 is in same quarter as 31-Mar-26 are not in same quarter"
+    assert not datemath.are_in_same_quarter(
+        date(2025, 1, 1),
+        date(2025, 4, 1)
+    ), "1-Jan-25 is in same quarter as 1-Apr-25 are not in same quarter"

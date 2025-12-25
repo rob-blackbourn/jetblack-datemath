@@ -401,24 +401,6 @@ def days_and_months_between(start_date: datetime.date, end_date: datetime.date) 
     return days, months
 
 
-def are_in_same_quarter(first: datetime.date, second: datetime.date) -> bool:
-    """Find out if two dates are in the same quarter.
-
-    Args:
-        first (datetime.date): The first date.
-        second (datetime.date): The second date.
-
-    Returns:
-        bool: True if the dates aare in the same quarter.
-    """
-    if first > second:
-        return are_in_same_quarter(second, first)  # pylint: disable=arguments-out-of-order
-
-    return first == second or (
-        first.year == second.year and second.month - first.month < 4 and (
-            second.month - 1) % 3 > (first.month - 1) % 3)
-
-
 def quarter_of_year(date: datetime.date) -> int:
     """Find the quarter of the year for a given date.
 
@@ -429,6 +411,22 @@ def quarter_of_year(date: datetime.date) -> int:
         int: The quarter of the year from 1, 2, 3, 4.
     """
     return (date.month - 1) // 3 + 1
+
+
+def are_in_same_quarter(first: datetime.date, second: datetime.date) -> bool:
+    """Find out if two dates are in the same quarter and year.
+
+    Args:
+        first (datetime.date): The first date.
+        second (datetime.date): The second date.
+
+    Returns:
+        bool: True if the dates are in the same quarter and year.
+    """
+    return (
+        first.year == second.year and
+        quarter_of_year(first) == quarter_of_year(second)
+    )
 
 
 def week_of_year(date: datetime.date, iso: bool = True) -> int:
