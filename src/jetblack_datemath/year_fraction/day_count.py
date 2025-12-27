@@ -4,12 +4,15 @@ from datetime import date
 
 class DayCount(metaclass=ABCMeta):
 
-    @classmethod
+    @property
     @abstractmethod
-    def days(cls, start: date, end: date) -> int:
+    def names(self) -> list[str]:
         ...
 
-    @classmethod
     @abstractmethod
-    def years(cls, start: date, end: date, ref_start: date, ref_end: date) -> float:
+    def days(self, start: date, end: date) -> int:
+        ...
+
+    @abstractmethod
+    def years(self, start: date, end: date, ref_start: date, ref_end: date) -> float:
         ...

@@ -1,27 +1,25 @@
 from datetime import date
-from typing import Literal
 
-from .act_afb import act_afb
-from .act_isda import act_isda
+from .day_count import DayCount
+from .actual_actual import DAY_COUNTERS as DAY_COUNTERS1
+from .thirty_360 import DAY_COUNTERS as DAY_COUNTERS2
 
-type DayCount = Literal[
-    'Act/Act(AFB)',
-    'Act/Act(ISDA)'
-]
+DAY_COUNTERS: dict[str, DayCount] = {
+    name: day_counter
+    for day_counters in [
+        DAY_COUNTERS1,
+        DAY_COUNTERS2
+    ]
+    for day_counter in day_counters
+    for name in day_counter.names
+}
 
 
-def yearfrac(first: date, second: date, day_count: DayCount) -> float:
-
-    match day_count:
-
-        case 'Act/Act(AFB)':
-
-            return act_afb(first, second)
-
-        case 'Act/Act(ISDA)':
-
-            return act_isda(first, second)
-
-        case _:
-
-            raise ValueError("Unknown day-count convention")
+def years(
+        day_count: str,
+        first: date,
+        second: date,
+        ref_start: date = date.min,
+        ref_end: date = date.max
+) -> float:
+    return DAY_COUNTERS[day_count].years(first, second, ref_start, ref_end)
