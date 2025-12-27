@@ -1,3 +1,4 @@
+from abc import ABCMeta
 from calendar import isleap
 from datetime import date
 from typing import override
@@ -5,7 +6,8 @@ from typing import override
 from .day_count import DayCount
 
 
-class ActualActual(DayCount):
+class ActualActual(DayCount, metaclass=ABCMeta):
+    """Base class for Act/Act"""
 
     @override
     def days(self, start: date, end: date) -> int:
@@ -17,7 +19,7 @@ class AFB(ActualActual):
     @override
     @property
     def names(self) -> list[str]:
-        return ["Actual/Actual (AFB)"]
+        return ["Act/Act (AFB)"]
 
     @override
     def years(self, start: date, end: date, ref_start: date, ref_end: date) -> float:
@@ -53,7 +55,7 @@ class ISDA(ActualActual):
     @override
     @property
     def names(self) -> list[str]:
-        return ["Actual/Actual (ISDA)"]
+        return ["Act/Act (ISDA)"]
 
     @override
     def years(self, start: date, end: date, ref_start: date, ref_end: date) -> float:

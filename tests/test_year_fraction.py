@@ -50,17 +50,17 @@ def test_thirty_360_bond_basis() -> None:
 def test_act_act() -> None:
     params: list[tuple[date, date, str, float, int]] = [
 
-        (date(2000, 1, 1), date(2001, 1, 1), 'Actual/Actual (AFB)', 1.0, 8),
-        # (date(2018, 12, 15), date(2019, 3, 1), 'Actual/Actual (AFB)', 0.20821918, 8),
-        # (date(2018, 12, 31), date(2019, 1, 1), 'Actual/Actual (AFB)', 1 / 365, 8),
-        # (date(1994, 6, 30), date(1997, 6, 30), 'Actual/Actual (AFB)', 3.0, 8),
-        # (date(1994, 2, 10), date(1994, 6, 30), 'Actual/Actual (AFB)', 140 / 365, 8),
+        (date(2000, 1, 1), date(2001, 1, 1), 'Act/Act (AFB)', 1.0, 8),
+        (date(2018, 12, 15), date(2019, 3, 1), 'Act/Act (AFB)', 0.20821918, 8),
+        (date(2018, 12, 31), date(2019, 1, 1), 'Act/Act (AFB)', 1 / 365, 8),
+        (date(1994, 6, 30), date(1997, 6, 30), 'Act/Act (AFB)', 3.0, 8),
+        (date(1994, 2, 10), date(1994, 6, 30), 'Act/Act (AFB)', 140 / 365, 8),
 
-        # (date(2000, 1, 1), date(2001, 1, 1), 'Actual/Actual (ISDA)', 1.0, 8),
-        # (date(2018, 12, 15), date(2019, 3, 1), 'Actual/Actual (ISDA)', 0.20821918, 8),
-        # (date(2018, 12, 31), date(2019, 1, 1), 'Actual/Actual (ISDA)', 1 / 365, 8),
-        # (date(1994, 6, 30), date(1997, 6, 30), 'Actual/Actual (ISDA)', 3.0, 8),
-        # (date(1994, 2, 10), date(1994, 6, 30), 'Actual/Actual (ISDA)', 140 / 365, 8)
+        (date(2000, 1, 1), date(2001, 1, 1), 'Act/Act (ISDA)', 1.0, 8),
+        (date(2018, 12, 15), date(2019, 3, 1), 'Act/Act (ISDA)', 0.20821918, 8),
+        (date(2018, 12, 31), date(2019, 1, 1), 'Act/Act (ISDA)', 1 / 365, 8),
+        (date(1994, 6, 30), date(1997, 6, 30), 'Act/Act (ISDA)', 3.0, 8),
+        (date(1994, 2, 10), date(1994, 6, 30), 'Act/Act (ISDA)', 140 / 365, 8)
     ]
     for first, second, day_count, expected, ndigits in params:
         actual = years(day_count, first, second)
