@@ -10,9 +10,23 @@ class DayCount(metaclass=ABCMeta):
         ...
 
     @abstractmethod
-    def days(self, start: date, end: date) -> int:
+    def days(
+            self,
+            date1: date,
+            date2: date,
+            maturity: date,
+            is_eom: bool
+    ) -> int:
         ...
 
     @abstractmethod
-    def years(self, start: date, end: date, ref_start: date, ref_end: date) -> float:
+    def years(
+            self,
+            date1: date,
+            date2: date,
+            ref_date1: date,
+            ref_date2: date,
+            maturity: date,
+            is_eom: bool
+    ) -> float:
         ...

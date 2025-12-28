@@ -20,21 +20,34 @@ def names() -> list[str]:
 
 
 def days(
+        date1: date,
+        date2: date,
         day_count: str,
-        first: date,
-        second: date,
+        *,
+        maturity: date = date.max,
+        is_eom: bool = False
 ) -> float:
-    return DAY_COUNTERS[day_count].days(first, second)
+    return DAY_COUNTERS[day_count].days(date1, date2, maturity, is_eom)
 
 
 def years(
+        date1: date,
+        date2: date,
         day_count: str,
-        first: date,
-        second: date,
-        ref_start: date = date.min,
-        ref_end: date = date.max
+        *,
+        ref_date1: date = date.min,
+        ref_date2: date = date.max,
+        maturity: date = date.max,
+        is_eom: bool = False
 ) -> float:
-    return DAY_COUNTERS[day_count].years(first, second, ref_start, ref_end)
+    return DAY_COUNTERS[day_count].years(
+        date1,
+        date2,
+        ref_date1,
+        ref_date2,
+        maturity,
+        is_eom
+    )
 
 
 __all__ = ['names', 'days', 'years']
