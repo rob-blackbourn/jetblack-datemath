@@ -1,14 +1,14 @@
 from datetime import date
 
 from .day_count import DayCount
-from .actual_actual import DAY_COUNTERS as DAY_COUNTERS1
-from .thirty_360 import DAY_COUNTERS as DAY_COUNTERS2
+from .actual_actual import DAY_COUNTERS as _DAY_COUNTERS1
+from .thirty_360 import DAY_COUNTERS as _DAY_COUNTERS2
 
-DAY_COUNTERS: dict[str, DayCount] = {
+_DAY_COUNTERS: dict[str, DayCount] = {
     name: day_counter
     for day_counters in [
-        DAY_COUNTERS1,
-        DAY_COUNTERS2
+        _DAY_COUNTERS1,
+        _DAY_COUNTERS2
     ]
     for day_counter in day_counters
     for name in day_counter.names
@@ -16,7 +16,11 @@ DAY_COUNTERS: dict[str, DayCount] = {
 
 
 def names() -> list[str]:
-    return list(DAY_COUNTERS.keys())
+    return list(_DAY_COUNTERS.keys())
+
+
+def day_counter(name: str) -> DayCount:
+    return _DAY_COUNTERS[name]
 
 
 def days(
@@ -27,7 +31,7 @@ def days(
         maturity: date = date.max,
         is_eom: bool = False
 ) -> float:
-    return DAY_COUNTERS[day_count].days(date1, date2, maturity, is_eom)
+    return day_counter(day_count).days(date1, date2, maturity, is_eom)
 
 
 def years(
@@ -40,7 +44,7 @@ def years(
         maturity: date = date.max,
         is_eom: bool = False
 ) -> float:
-    return DAY_COUNTERS[day_count].years(
+    return day_counter(day_count).years(
         date1,
         date2,
         ref_date1,
@@ -50,4 +54,4 @@ def years(
     )
 
 
-__all__ = ['names', 'days', 'years']
+__all__ = ['names', 'day_counter', 'days', 'years', 'DayCount']
